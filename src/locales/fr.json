@@ -1,0 +1,18 @@
+{
+  "general": {
+    "copyright": "bcoquard © 2019 Made for fun, made to last."
+  },
+  "toolbar": {
+    "logout": "Déconnecter"
+  },
+  "inputs": {
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe"
+  },
+  "drawer": {
+    "home": "Accueil",
+    "apis": "Liste des APIs",
+    "performances": "Performances",
+    "codes": "Liste de codes"
+  }
+}
