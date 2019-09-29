@@ -1,6 +1,6 @@
 <template>
   <main>
-    <md-app>
+    <md-app class="app-wrapper">
       <TopBar slot="md-app-toolbar" />
       <Drawer slot="md-app-drawer" />
       <md-app-content>
@@ -25,3 +25,8 @@ export default {
   computed: {}
 }
 </script>
+<style scoped>
+.app-wrapper {
+  min-height: 100vh;
+}
+</style>

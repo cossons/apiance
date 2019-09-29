@@ -16,12 +16,16 @@ export default new Router({
       beforeEnter: AuthRequired,
       children: [
         {
-          path: 'app/home',
+          path: '/app/apis',
+          name: 'apis',
+          component: () => import(/* webpackChunkName: "Home" */ './views/app/Apis.vue')
+        }, {
+          path: '/app/home',
           name: 'home',
           component: () => import(/* webpackChunkName: "Home" */ './views/app/Home.vue')
         },
         {
-          path: 'app/about',
+          path: '/app/about',
           name: 'about',
           component: () => import(/* webpackChunkName: "About" */ './views/app/About.vue')
         }

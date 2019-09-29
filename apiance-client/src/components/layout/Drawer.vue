@@ -1,6 +1,6 @@
 <template>
   <md-app-drawer :md-active.sync="menuVisible" md-persistent="mini">
-    <md-toolbar class="md-transparent" md-elevation="0">
+    <md-toolbar class="md-primary" md-elevation="0">
       <span>Navigation</span>
 
       <div class="md-toolbar-section-end">
@@ -17,6 +17,17 @@
           <span class="md-list-item-text">{{$t('drawer.home')}}</span>
         </md-list-item>
       </router-link>
+
+      <md-list-item md-expand>
+        <md-icon>videogame_asset</md-icon>
+        <span class="md-list-item-text">Games</span>
+
+        <md-list slot="md-expand">
+          <md-list-item class="md-inset">Console</md-list-item>
+          <md-list-item class="md-inset">PC</md-list-item>
+          <md-list-item class="md-inset">Phone</md-list-item>
+        </md-list>
+      </md-list-item>
 
       <router-link to="/app/apis">
         <md-list-item>
