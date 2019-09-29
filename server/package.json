@@ -1,0 +1,23 @@
+{
+  "name": "apiance-server",
+  "description": "",
+  "author": "Benjamin Coquard",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index",
+    "start": "cross-env NODE_ENVIRONMENT=production node index"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "cross-env": "^5.2.0",
+    "dotenv": "^7.0.0",
+    "express": "^4.17.1",
+    "nedb": "^1.8.0",
+    "swagger-parser": "^8.0.1",
+    "validator": "^11.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
