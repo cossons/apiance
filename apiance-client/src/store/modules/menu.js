@@ -1,6 +1,6 @@
 export default {
   state: {
-    menuVisible: true
+    menuVisible: false
   },
   getters: {
     getMenuVisible: state => state.menuVisible

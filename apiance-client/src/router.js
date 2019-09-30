@@ -16,7 +16,8 @@ export default new Router({
       beforeEnter: AuthRequired,
       children: [
         {
-          path: '/app/apis',
+          path: '/app/apis/:id',
+          props: true,
           name: 'apis',
           component: () => import(/* webpackChunkName: "Home" */ './views/app/Apis.vue')
         }, {

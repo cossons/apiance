@@ -1,11 +1,12 @@
 <template>
   <div>
-    <div>{{contracts}}</div>
+    <div id="swagger-ui"></div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import SwaggerUI from 'swagger-ui'
 import { RepositoryFactory } from '../../repositories/repository-factory'
 const ContractsRepository = RepositoryFactory.get('contracts')
 
@@ -14,17 +15,44 @@ export default {
   components: {},
   data() {
     return {
-      contracts: []
+      contract: {}
     }
   },
   created() {
-    this.fetch()
+    this.fetch(this.$route.params.id)
+  },
+  mounted() {
+    this.loadSwagger()
   },
   methods: {
-    async fetch() {
-      const { data } = await ContractsRepository.getNames()
-      this.contracts = data
+    async fetch(id) {
+      const { data } = await ContractsRepository.getOne(id)
+      this.contract = data
+      console.log()
+    },
+    loadSwagger() {
+      SwaggerUI({
+        url: 'http://localhost:3000/api/contracts/' + this.$route.params.id,
+        dom_id: '#swagger-ui',
+        deepLinking: false,
+        presets: [SwaggerUI.presets.apis, SwaggerUI.SwaggerUIStandalonePreset],
+        plugins: [SwaggerUI.plugins.DownloadUrl]
+      })
     }
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.fetch(to.params.id)
+    next()
   }
 }
 </script>
+
+<style lang="scss">
+@import '~swagger-ui/dist/swagger-ui.css';
+
+.title {
+  font-size: 36px;
+  margin: 0;
+  color: #3b4151;
+}
+</style>
