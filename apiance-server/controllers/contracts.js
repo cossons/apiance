@@ -15,12 +15,24 @@ exports.findAll = async (request, response) => {
 
 };
 
+exports.findAllNames = async (request, response) => {
+  // const articles = await model.find().sort("_id");
+  db.find({}, { host: 1, 'info.title': 1, 'info.version': 1 }, function (err, docs) {
+    response.send(docs);
+  });
+
+};
+
 exports.findById = async (request, response) => {
   db.find({ _id: request.params.id }, function (err, docs) {
     if (err) {
       response.status(500).send({ error: err });
     } else {
-      response.send(docs)
+      if (docs.length >= 1) {
+        response.send(docs[0])
+      } else {
+        response.send(docs);
+      }
     }
   });
 };

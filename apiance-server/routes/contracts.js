@@ -6,6 +6,9 @@ const contractsController = require("../controllers/contracts");
 // Get all
 router.get("/", catchErrors(contractsController.findAll));
 
+// Get all
+router.get("/names", catchErrors(contractsController.findAllNames));
+
 // Get one by Id
 router.get("/:id", catchErrors(contractsController.findById));
 

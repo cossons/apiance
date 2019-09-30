@@ -1,5 +1,5 @@
 const Datastore = require('nedb');
-var contracts = new Datastore();
+var contracts = new Datastore({ filename: '../data/contracts.db', autoload: true });
 
 // Declare Schema
 
