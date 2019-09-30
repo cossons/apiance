@@ -21,39 +21,25 @@
       <md-list-item md-expand>
         <md-icon>view_list</md-icon>
         <span class="md-list-item-text">List APIs</span>
-
-        <md-list slot="md-expand">
-          <md-list-item
-            v-for="(consumer, it)  in this.contracts.entries()"
-            :key="it"
-            class="md-inset"
-          >
-            <md-list class="md-dense">
-              <md-list-item md-expand>
-                <span class="md-list-item-text">{{consumer[0]}}</span>
-                <md-list slot="md-expand">
-                  <md-list-item v-for="(api, it)  in consumer[1]" :key="it" class="md-inset">
-                    <md-list class="md-dense">
-                      <md-list-item md-expand>
-                        <span class="md-list-item-text">{{api[0]}}</span>
-                        <md-list slot="md-expand">
-                          <md-list-item v-for="(version, it)  in api[1]" :key="it" class="md-inset">
-                            <md-list class="md-dense">
-                              <md-list-item>
-                                <router-link :to="{ name: 'apis', params: {id: version[1]} }">
-                                  <span class="md-list-item-text">{{version[0]}}</span>
-                                </router-link>
-                                <md-list slot="md-expand"></md-list>
-                              </md-list-item>
-                            </md-list>
-                          </md-list-item>
-                        </md-list>
+        <md-list slot="md-expand" class="consumer-container">
+          <md-list-item v-for="(consumer, it)  in this.contracts.entries()" :key="it">
+            <md-list-item md-expand class="no-border">
+              <span class="md-list-item-text">{{consumer[0]}}</span>
+              <md-list slot="md-expand" class="api-container">
+                <md-list-item v-for="(api, it)  in consumer[1]" :key="it" class="md-inset">
+                  <md-list-item md-expand class="no-border">
+                    <span class="md-list-item-text">{{api[0]}}</span>
+                    <md-list slot="md-expand" class="version-container">
+                      <md-list-item v-for="(version, it) in api[1]" :key="it">
+                        <router-link :to="{ name: 'apis', params: {id: version[1]} }">
+                          <span class="md-list-item-text">{{version[0]}}</span>
+                        </router-link>
                       </md-list-item>
                     </md-list>
                   </md-list-item>
-                </md-list>
-              </md-list-item>
-            </md-list>
+                </md-list-item>
+              </md-list>
+            </md-list-item>
           </md-list-item>
         </md-list>
       </md-list-item>
@@ -135,3 +121,34 @@ export default {
   }
 }
 </script>
+
+<style>
+.md-list {
+  padding: 0px !important;
+}
+.md-list-item-content {
+  padding: 0px !important;
+  padding-left: 15px !important;
+}
+
+.md-list-item {
+  width: 100%;
+}
+
+.api-container > * > * > * > * > * > * > span {
+  color: red;
+}
+
+.version-container {
+  display: flex !important;
+  flex-flow: row !important;
+}
+
+.version-container > * > * > * > * > span {
+  margin-left: 5px;
+}
+
+.no-border > div {
+  border: 0px;
+}
+</style>

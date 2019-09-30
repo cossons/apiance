@@ -22,7 +22,7 @@ export default {
     this.fetch(this.$route.params.id)
   },
   mounted() {
-    this.loadSwagger()
+    this.loadSwagger(this.$route.params.id)
   },
   methods: {
     async fetch(id) {
@@ -30,9 +30,9 @@ export default {
       this.contract = data
       console.log()
     },
-    loadSwagger() {
+    loadSwagger(id) {
       SwaggerUI({
-        url: 'http://localhost:3000/api/contracts/' + this.$route.params.id,
+        url: 'http://localhost:3000/api/contracts/' + id,
         dom_id: '#swagger-ui',
         deepLinking: false,
         presets: [SwaggerUI.presets.apis, SwaggerUI.SwaggerUIStandalonePreset],
@@ -42,6 +42,8 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     this.fetch(to.params.id)
+    this.loadSwagger(to.params.id)
+
     next()
   }
 }
@@ -49,10 +51,4 @@ export default {
 
 <style lang="scss">
 @import '~swagger-ui/dist/swagger-ui.css';
-
-.title {
-  font-size: 36px;
-  margin: 0;
-  color: #3b4151;
-}
 </style>
