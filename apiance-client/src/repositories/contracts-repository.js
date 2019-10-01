@@ -17,5 +17,9 @@ export default {
 
   createOne(payload) {
     return repository.post(`${resource}`, payload)
+  },
+
+  clearAll() {
+    return repository.delete(`${resource}/clear`)
   }
 }

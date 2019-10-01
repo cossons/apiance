@@ -18,6 +18,9 @@ router.post("/", catchErrors(contractsController.create));
 // Update one
 router.put("/:id", catchErrors(contractsController.update));
 
+// Delete all
+router.delete("/clear", catchErrors(contractsController.clear));
+
 // Delete one
 router.delete("/:id", catchErrors(contractsController.delete));
 

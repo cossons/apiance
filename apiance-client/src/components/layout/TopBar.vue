@@ -10,7 +10,12 @@
 
     <div class="md-toolbar-section-end">
       <md-button class="md-icon-button">
-        <md-icon>refresh</md-icon>
+        <router-link :to="{ name: 'admin' }">
+          <md-icon v-if="this.$route.name !== 'admin'">supervisor_account</md-icon>
+        </router-link>
+        <router-link :to="{ name: 'home' }">
+          <md-icon v-if="this.$route.name === 'admin'">home</md-icon>
+        </router-link>
       </md-button>
       <md-button v-on:click="sendLogout">{{ $t('toolbar.logout')}}</md-button>
 

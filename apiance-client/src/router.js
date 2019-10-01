@@ -20,10 +20,11 @@ export default new Router({
           props: true,
           name: 'apis',
           component: () => import(/* webpackChunkName: "Home" */ './views/app/Apis.vue')
-        }, {
+        },
+        {
           path: '/app/home',
           name: 'home',
-          component: () => import(/* webpackChunkName: "Home" */ './views/app/Home.vue')
+          component: () => import(/* webpackChunkName: "About" */ './views/app/Home.vue')
         },
         {
           path: '/app/about',
@@ -31,6 +32,10 @@ export default new Router({
           component: () => import(/* webpackChunkName: "About" */ './views/app/About.vue')
         }
       ]
+    }, {
+      path: '/admin',
+      name: 'admin',
+      component: () => import(/* webpackChunkName: "Home" */ './views/Admin.vue')
     },
     {
       path: '/login',

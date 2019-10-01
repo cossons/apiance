@@ -1,6 +1,6 @@
 const db = require('../models/contracts')
 const SwaggerParser = require("swagger-parser");
-
+const moment = require('moment');
 
 //const model = require('../models/contracts');
 
@@ -17,7 +17,7 @@ exports.findAll = async (request, response) => {
 
 exports.findAllNames = async (request, response) => {
   // const articles = await model.find().sort("_id");
-  db.find({}, { host: 1, 'info.title': 1, 'info.version': 1 }, function (err, docs) {
+  db.find({}, { 'swagger.host': 1, 'swagger.info.title': 1, 'swagger.info.version': 1 }, function (err, docs) {
     response.send(docs);
   });
 
@@ -45,7 +45,12 @@ exports.create = async (request, response) => {
   }
 
   try {
-    let api = await SwaggerParser.validate(swaggerDoc);
+    let swaggerJson = await SwaggerParser.validate(swaggerDoc);
+
+    let contrat = {
+      dtInsert: moment().unix(),
+      swagger: swaggerJson
+    };
     db.insert(api, function (err, newDoc) {
       // newDoc is the newly inserted document, including its _id
       // newDoc has no key called notToBeSaved since its value was undefined
@@ -67,4 +72,14 @@ exports.update = async (request, response) => {
 
 exports.delete = async (request, response) => {
   response.send([]);
+};
+
+exports.clear = async (request, response) => {
+  db.remove({}, { multi: true }, function (err, numRemoved) {
+    if (err) {
+      response.status(500).send({ error: err.toString() })
+    } else {
+      response.send({ total: numRemoved })
+    }
+  })
 };
