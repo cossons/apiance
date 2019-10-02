@@ -88,7 +88,13 @@ export default {
       const { data } = await ContractsRepository.getNames()
 
       let map = new Map()
-      data.forEach(function(contract) {
+      data.forEach(function(iter) {
+        let contract = iter.swagger
+
+        if (contract.host === undefined) {
+          contract.host = 'N/A'
+        }
+
         if (!map.has(contract.host)) {
           map.set(contract.host, new Map())
 
@@ -97,10 +103,10 @@ export default {
             cons.set(contract.info.title, new Map())
 
             let api = cons.get(contract.info.title)
-            api.set(contract.info.version, contract._id)
+            api.set(contract.info.version, iter._id)
           } else {
             let api = cons.get(contract.info.title)
-            api.set(contract.info.version, contract._id)
+            api.set(contract.info.version, iter._id)
           }
         } else {
           let cons = map.get(contract.host)
@@ -108,10 +114,10 @@ export default {
             cons.set(contract.info.title, new Map())
 
             let api = cons.get(contract.info.title)
-            api.set(contract.info.version, contract._id)
+            api.set(contract.info.version, iter._id)
           } else {
             let api = cons.get(contract.info.title)
-            api.set(contract.info.version, contract._id)
+            api.set(contract.info.version, iter._id)
           }
         }
       })

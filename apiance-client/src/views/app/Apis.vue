@@ -32,7 +32,7 @@ export default {
     },
     loadSwagger(id) {
       SwaggerUI({
-        url: 'http://localhost:3000/api/contracts/' + id,
+        url: 'http://localhost:3000/api/contracts/' + id + '/swagger',
         dom_id: '#swagger-ui',
         deepLinking: false,
         presets: [SwaggerUI.presets.apis, SwaggerUI.SwaggerUIStandalonePreset],

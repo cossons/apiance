@@ -9,14 +9,18 @@
     <h3 class="md-title" style="flex: 1">APIANCE - An API Doc Platform</h3>
 
     <div class="md-toolbar-section-end">
-      <md-button class="md-icon-button">
-        <router-link :to="{ name: 'admin' }">
-          <md-icon v-if="this.$route.name !== 'admin'">supervisor_account</md-icon>
-        </router-link>
-        <router-link :to="{ name: 'home' }">
-          <md-icon v-if="this.$route.name === 'admin'">home</md-icon>
-        </router-link>
-      </md-button>
+      <router-link v-if="this.$route.name !== 'admin'" :to="{ name: 'admin' }">
+        <md-button class="md-icon-button">
+          <md-icon>supervisor_account</md-icon>
+        </md-button>
+      </router-link>
+
+      <router-link v-if="this.$route.name === 'admin'" :to="{ name: 'home' }">
+        <md-button class="md-icon-button">
+          <md-icon>home</md-icon>
+        </md-button>
+      </router-link>
+
       <md-button v-on:click="sendLogout">{{ $t('toolbar.logout')}}</md-button>
 
       <md-menu>

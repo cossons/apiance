@@ -12,6 +12,9 @@ router.get("/names", catchErrors(contractsController.findAllNames));
 // Get one by Id
 router.get("/:id", catchErrors(contractsController.findById));
 
+// Get one swagger by Id
+router.get("/:id/swagger", catchErrors(contractsController.findSwaggerById));
+
 // Add one
 router.post("/", catchErrors(contractsController.create));
 

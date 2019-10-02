@@ -6,7 +6,7 @@
         <div>
           <md-tabs>
             <md-tab id="tab-swagger" md-label="Swagger">
-              <Swagger />
+              <SwaggerTab />
             </md-tab>
           </md-tabs>
         </div>
@@ -17,7 +17,7 @@
 <script>
 // import Sidebar from "@/containers/Sidebar";
 import TopBar from '../components/layout/TopBar'
-import Swagger from '../components/admin/Swagger'
+import SwaggerTab from '../components/admin/SwaggerTab'
 
 export default {
   data() {
@@ -25,7 +25,7 @@ export default {
   },
   components: {
     TopBar,
-    Swagger
+    SwaggerTab
   },
   computed: {}
 }

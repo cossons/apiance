@@ -31,7 +31,21 @@ exports.findById = async (request, response) => {
       if (docs.length >= 1) {
         response.send(docs[0])
       } else {
-        response.send(docs);
+        response.status(500).send({ error: "Multiple documents found" });
+      }
+    }
+  });
+};
+
+exports.findSwaggerById = async (request, response) => {
+  db.find({ _id: request.params.id }, function (err, docs) {
+    if (err) {
+      response.status(500).send({ error: err });
+    } else {
+      if (docs.length >= 1) {
+        response.send(docs[0].swagger)
+      } else {
+        response.status(500).send({ error: "Multiple documents found" });
       }
     }
   });
@@ -47,14 +61,15 @@ exports.create = async (request, response) => {
   try {
     let swaggerJson = await SwaggerParser.validate(swaggerDoc);
 
-    let contrat = {
+    let contract = {
       dtInsert: moment().unix(),
       swagger: swaggerJson
     };
-    db.insert(api, function (err, newDoc) {
+    db.insert(contract, function (err, newDoc) {
       // newDoc is the newly inserted document, including its _id
       // newDoc has no key called notToBeSaved since its value was undefined
       if (err) {
+        console.err(err)
         response.status(500).send({ error: err.toString() });
       } else {
         response.send(newDoc._id);
@@ -62,6 +77,7 @@ exports.create = async (request, response) => {
     });
   }
   catch (err) {
+    console.log(err)
     response.status(500).send({ error: err.toString() });
   }
 };
