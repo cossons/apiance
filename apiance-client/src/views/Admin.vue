@@ -1,18 +1,30 @@
 <template>
-  <main>
-    <md-app class="app-wrapper">
-      <TopBar slot="md-app-toolbar" />
-      <md-app-content>
-        <div>
-          <md-tabs>
-            <md-tab id="tab-swagger" md-label="Swagger">
+  <div>
+    <TopBar slot="md-app-toolbar" />
+    <v-container>
+      <v-tabs vertical>
+        <v-tab>
+          <v-icon left>mdi-lock</v-icon>Swagger
+        </v-tab>
+        <v-tab>
+          <v-icon left>mdi-account</v-icon>Users
+        </v-tab>
+
+        <v-tab-item>
+          <v-card flat>
+            <v-card-text>
               <SwaggerTab />
-            </md-tab>
-          </md-tabs>
-        </div>
-      </md-app-content>
-    </md-app>
-  </main>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item>
+          <v-card flat>
+            <v-card-text></v-card-text>
+          </v-card>
+        </v-tab-item>
+      </v-tabs>
+    </v-container>
+  </div>
 </template>
 <script>
 // import Sidebar from "@/containers/Sidebar";
@@ -30,8 +42,3 @@ export default {
   computed: {}
 }
 </script>
-<style scoped>
-.app-wrapper {
-  min-height: 100vh;
-}
-</style>

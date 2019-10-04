@@ -1,6 +1,17 @@
 <template>
-  <div>
-    <vue-snotify></vue-snotify>
-    <router-view />
-  </div>
+  <v-app class="app-wrapper">
+    <router-view></router-view>
+  </v-app>
 </template>
+
+<script>
+export default {
+  name: 'App'
+}
+</script>
+
+<style scoped>
+.app-wrapper {
+  min-height: 100vh;
+}
+</style>
