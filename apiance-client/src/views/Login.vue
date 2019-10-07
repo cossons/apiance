@@ -1,20 +1,24 @@
 <template>
-  <md-content>
+  <md-content id="bg-1" :class="{ 'md-error': error }">
     <md-content class="md-gutter md-layout md-alignment-center">
-      <img src="@/assets/logos/logo.png" alt="apiance" width="200px" />
+      <img src="@/assets/logos/logo.png" alt="apiance" width="160px" />
     </md-content>
 
     <md-content class="md-gutter md-layout md-alignment-center">
+      
       <form @submit.prevent="validateLogin" class="login-card">
+        <div id="owl-login" :class="{ 'focused': focused }">
+          <div class="eyes"></div>
+          <div class="arm-up-right"></div>
+          <div class="arm-up-left"></div>
+          <div class="arm-down-left"></div>
+          <div class="arm-down-right"></div>
+        </div>
         <md-card>
-          <md-card-header>
-            <md-card-header-text>
-              <div class="md-title md-layout md-gutter md-alignment-center">Please Login</div>
-            </md-card-header-text>
-          </md-card-header>
+
 
           <md-card-content>
-            <div class="md-layout-item md-small-size-100">
+            <div class="top-40 md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('email')">
                 <label for="first-name">First Name</label>
                 <md-input name="email" id="email" autocomplete v-model="form.email" />
@@ -22,9 +26,9 @@
                 <span class="md-error" v-else-if="!$v.form.email.email">Email is not correct</span>
               </md-field>
 
-              <md-field :class="getValidationClass('password')">
+              <md-field :class="getValidationClass('password')" >
                 <label for="first-name">Password</label>
-                <md-input name="password" id="password" type="password" v-model="form.password" />
+                <md-input name="password" id="password" type="password" v-model="form.password" @focus="focused = true" @blur="focused = false"/>
                 <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
               </md-field>
             </div>
@@ -33,8 +37,13 @@
           <md-card-actions>
             <md-button type="submit" class="md-primary">Login</md-button>
           </md-card-actions>
+
+          
         </md-card>
+        
       </form>
+
+      <img src="@/assets/images/bg/api.png" alt="apiance" width="800px" class="bgBottom" />
 
       <!--
     <b-row class="h-100">
@@ -97,7 +106,8 @@ export default {
       email: 'ben@gmail.com',
       password: 'test'
     },
-    userSaved: false
+    userSaved: false,
+    focused: false
   }),
   validations: {
     form: {
@@ -156,11 +166,117 @@ export default {
 
 <style scoped>
 .login-card {
-  width: 600px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 500px;
+  z-index: 1;
 }
-
 img {
-  width: 300px;
   margin: 10px;
+}
+.top-40{
+  margin-top: 40px;
+}
+#owl-login {
+  width: 116px;
+  height: 92px;
+  background: url(../assets/images/face.png);
+  position: absolute;
+  top: -82px;
+  left: 50%;
+  margin-left: -58px;
+}
+#owl-login .eyes {
+  width: 100%;
+  height: 100%;
+  background: url(../assets/images/eyes.png);
+  opacity: 0;
+  transition: 0.1s ease-out 0s;
+}
+#owl-login .arm-up-right {
+  width: 51px;
+  height: 41px;
+  position: absolute;
+  bottom: 11px;
+  right: 5px;
+  transform: translateX(57px) scale(.8);
+  transform-origin: 0 40px;
+  transition: background-position 0.3s ease-in-out, transform 0.3s ease-in-out, opacity 0.3s linear;
+  background: url(../assets/images/arm-up-right.png) no-repeat 0 25px;
+  opacity: 0;
+}
+#owl-login .arm-up-left {
+  width: 52px;
+  height: 41px;
+  position: absolute;
+  bottom: 11px;
+  left: -3px;
+  transform: translateX(-34px) scale(.8);
+  transform-origin: 0 40px;
+  transition: background-position 0.3s ease-in-out, transform 0.3s ease-in-out, opacity 0.3s linear;
+  background: url(../assets/images/arm-up-left.png) no-repeat 0 25px;
+  opacity: 0;
+}
+#owl-login .arm-down-left {
+  width: 43px;
+  height: 25px;
+  background: url(../assets/images/arm-down-left.png);
+  position: absolute;
+  bottom: 2px;
+  left: -34px;
+  transition: 0.3s ease-out;
+}
+#owl-login .arm-down-right {
+  width: 43px;
+  height: 26px;
+  background: url(../assets/images/arm-down-right.png);
+  position: absolute;
+  bottom: 1px;
+  right: -40px;
+  transition: all 0.3s ease-in-out;
+}
+#owl-login.focused .arm-up-left, #owl-login.focused .arm-up-right {
+  opacity: 1;
+  transform: scale(1);
+  background-position: 0 0;
+}
+#owl-login.focused .arm-up-left, #owl-login.focused .arm-up-right {
+  opacity: 1;
+  transform: scale(1);
+  background-position: 0 0;
+}
+#owl-login.focused .arm-down-left {
+  opacity: 0;
+  transform: translateX(10px) scale(0) translateY(-10px);
+}
+#owl-login.focused .arm-down-right {
+  opacity: 0;
+  transform: translateX(12px) scale(0) translateY(-8px);
+} 
+.md-content.md-theme-default{
+  background-color: transparent;
+}
+#bg-1 {
+  background-image: url(../assets/images/bg/1.png);
+  background-color: #fff;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+  overflow: hidden;
+  min-height: 100%;
+  height: 100vh;
+  width: 100vw;
+} 
+.login-card .md-card.md-theme-default{
+  background: transparent;
+}
+.bgBottom{
+  position: absolute;
+  right: 0;
+  bottom: 0
 }
 </style>
