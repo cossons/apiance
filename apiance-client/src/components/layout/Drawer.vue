@@ -24,7 +24,7 @@
 
       <v-list-group prepend-icon="account_circle" value="true">
         <template v-slot:activator>
-          <v-list-item-title>Users</v-list-item-title>
+          <v-list-item-title>{{$t('drawer.apis')}}</v-list-item-title>
         </template>
 
         <v-list-group

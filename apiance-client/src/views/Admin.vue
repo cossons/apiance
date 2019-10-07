@@ -1,8 +1,8 @@
 <template>
   <div>
     <TopBar slot="md-app-toolbar" />
-    <v-container>
-      <v-tabs vertical>
+    <v-content>
+        <v-tabs vertical>
         <v-tab>
           <v-icon left>mdi-lock</v-icon>Swagger
         </v-tab>
@@ -23,7 +23,7 @@
           </v-card>
         </v-tab-item>
       </v-tabs>
-    </v-container>
+   </v-content>
   </div>
 </template>
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar fixed="false" app>
+  <v-app-bar app clipped-left>
     <v-toolbar class="primary" dark>
       <v-toolbar-title>APIANCE - An API Doc Platform</v-toolbar-title>
 
@@ -13,7 +13,7 @@
         <v-icon>mdi-home</v-icon>
       </v-btn>
 
-      <v-button v-on:click="sendLogout">{{ $t('toolbar.logout')}}</v-button>
+      <v-btn v-on:click="sendLogout">{{ $t('toolbar.logout')}}</v-btn>
 
       <v-menu bottom left>
         <template v-slot:activator="{ on }">
@@ -61,4 +61,3 @@ export default {
   }
 }
 </script>
-

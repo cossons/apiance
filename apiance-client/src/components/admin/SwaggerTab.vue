@@ -1,14 +1,31 @@
 <template>
-  <md-content>
+  <v-container>
+     <v-dialog v-model="deleteModal" persistent max-width="290">
+      <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Delete all</v-btn>
+      </template>
+      <v-card>
+        <v-card-title class="headline">Delete Swaggers</v-card-title>
+        <v-card-text>You will delete all swagger contracts. Will you proceed ?</v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn color="green darken-1" text @click="deleteModal = false">Disagree</v-btn>
+          <v-btn color="green darken-1" text @click="deleteModal = false">Agree</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <div>
-      <md-dialog-confirm
-        :md-active.sync="deleteModal"
+      <!-- <v-dialog v-model="deleteModal"
         md-title="Confirm"
         md-content="You will delete all contracts. Will you proceed ?"
         @md-cancel="deleteOnCancel"
         @md-confirm="deleteOnConfirm"
       />
-      <md-button class="md-accent md-raised" @click="deleteModal = true">Delete all swagger</md-button>
+       <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template>
+      <v-btn class="green darken-1" text @click="deleteModal = true">Delete all swaggers</v-btn> -->
     </div>
 
     <div>
@@ -49,7 +66,7 @@
         </md-list-item>
       </md-list>
     </div>
-  </md-content>
+  </v-container>
 </template>
 
 <script>
