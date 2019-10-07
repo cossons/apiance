@@ -3,26 +3,26 @@
     <v-list shaped dense>
       <v-list-item :to="{ name: 'home' }" link>
         <v-list-item-icon>
-          <v-icon>mdi-home</v-icon>
+          <v-icon>fa-home</v-icon>
         </v-list-item-icon>
         <v-list-item-title>{{$t('drawer.home')}}</v-list-item-title>
       </v-list-item>
 
       <v-list-item :to="{ name: 'performances' }">
         <v-list-item-icon>
-          <v-icon>mdi-home</v-icon>
+          <v-icon>fa-tachometer-alt</v-icon>
         </v-list-item-icon>
         <v-list-item-title>{{$t('drawer.performances')}}</v-list-item-title>
       </v-list-item>
 
       <v-list-item :to="{ name: 'codes' }">
         <v-list-item-icon>
-          <v-icon>mdi-home</v-icon>
+          <v-icon>fa-list-alt</v-icon>
         </v-list-item-icon>
         <v-list-item-title>{{$t('drawer.codes')}}</v-list-item-title>
       </v-list-item>
 
-      <v-list-group prepend-icon="account_circle" value="true">
+      <v-list-group prepend-icon="fa-file-contract" value="true">
         <template v-slot:activator>
           <v-list-item-title>{{$t('drawer.apis')}}</v-list-item-title>
         </template>

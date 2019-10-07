@@ -45,3 +45,4 @@ https://material.io/components/pickers/
 https://vuematerial.io/getting-started/
 
 https://github.com/vuetifyjs/vuetify
+https://fontawesome.com/icons?d=gallery&q=user

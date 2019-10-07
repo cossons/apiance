@@ -1,13 +1,13 @@
 <template>
   <div>
-    <TopBar slot="md-app-toolbar" />
+    <TopBar />
     <v-content>
-        <v-tabs vertical>
+      <v-tabs vertical>
         <v-tab>
-          <v-icon left>mdi-lock</v-icon>Swagger
+          <v-icon left>fa-lock</v-icon>Swagger
         </v-tab>
         <v-tab>
-          <v-icon left>mdi-account</v-icon>Users
+          <v-icon left>fa-users</v-icon>Users
         </v-tab>
 
         <v-tab-item>
@@ -23,7 +23,7 @@
           </v-card>
         </v-tab-item>
       </v-tabs>
-   </v-content>
+    </v-content>
   </div>
 </template>
 <script>

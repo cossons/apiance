@@ -1,34 +1,77 @@
 <template>
   <v-container>
-     <v-dialog v-model="deleteModal" persistent max-width="290">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Delete all</v-btn>
-      </template>
-      <v-card>
-        <v-card-title class="headline">Delete Swaggers</v-card-title>
-        <v-card-text>You will delete all swagger contracts. Will you proceed ?</v-card-text>
-        <v-card-actions>
-          <div class="flex-grow-1"></div>
-          <v-btn color="green darken-1" text @click="deleteModal = false">Disagree</v-btn>
-          <v-btn color="green darken-1" text @click="deleteModal = false">Agree</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <v-card class="pa-5">
+      <v-card-title>Swagger Utils</v-card-title>
 
-    <div>
-      <!-- <v-dialog v-model="deleteModal"
-        md-title="Confirm"
-        md-content="You will delete all contracts. Will you proceed ?"
-        @md-cancel="deleteOnCancel"
-        @md-confirm="deleteOnConfirm"
-      />
-       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-      </template>
-      <v-btn class="green darken-1" text @click="deleteModal = true">Delete all swaggers</v-btn> -->
-    </div>
+      <v-dialog v-model="deleteModal" persistent max-width="290">
+        <template v-slot:activator="{ on }">
+          <div class="d-flex justify-end ma-5">
+            <v-btn class color="primary" dark v-on="on">Delete all</v-btn>
+          </div>
+        </template>
 
-    <div>
+        <v-card>
+          <v-card-title class="headline">Delete Swaggers</v-card-title>
+          <v-card-text>You will delete all swagger contracts. Will you proceed ?</v-card-text>
+          <v-card-actions>
+            <div class="flex-grow-1"></div>
+            <v-btn color="green darken-1" text @click="deleteOnCancel">Disagree</v-btn>
+            <v-btn color="green darken-1" text @click="deleteOnConfirm">Agree</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-file-input
+        v-model="selectedFiles"
+        color="deep-purple accent-4"
+        counter
+        label="Choose your swaggers - json/yaml"
+        multiple
+        placeholder="Select your files"
+        prepend-icon="fa-paperclip"
+        outlined
+        show-size
+        @change="onFileUpload"
+      >
+        <template v-slot:selection="{ index, text }">
+          <v-chip v-if="index < 2" color="indigo darken-1" dark label small>{{ text }}</v-chip>
+          <span
+            v-else-if="index === 2"
+            class="overline grey--text text--darken-3 mx-2"
+          >+{{ files.length - 2 }} File(s)</span>
+        </template>
+      </v-file-input>
+
+      <v-list two-line subheader v-if="files.length !== 0">
+        <v-subheader inset>Scanning results</v-subheader>
+
+        <v-list-item v-for="file in this.files" :key="file.name">
+          <v-list-item-avatar>
+            <v-icon v-if="file.error !== null" style="color: red">fa-exclamation-triangle</v-icon>
+            <v-icon v-if="file.error === null" style="color: green">fa-thumbs-up</v-icon>
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+            <span>{{ file.name }}</span>
+            <span v-if="file.error !== null">{{file.error}}</span>
+          </v-list-item-content>
+
+          <v-list-item-action>
+            <v-btn icon>
+              <v-icon color="lighten-1" @click="removeOne(file)">fa-trash</v-icon>
+            </v-btn>
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
+
+      <v-btn
+        color="primary"
+        v-if="files.length !== 0 && filesErrors ===0"
+        @click="sendSwaggers"
+      >Load</v-btn>
+    </v-card>
+
+    <!-- <div>
       <h3 class="md-title">Import Swagger files (json/yml)</h3>
       <md-field>
         <label>Swaggers</label>
@@ -65,7 +108,7 @@
           </div>
         </md-list-item>
       </md-list>
-    </div>
+    </div>-->
   </v-container>
 </template>
 
@@ -90,8 +133,13 @@ export default {
         .catch(function(error) {
           console.log(error)
         })
+        .finally(() => {
+          this.deleteModal = false
+        })
     },
-    deleteOnCancel() {},
+    deleteOnCancel() {
+      this.deleteModal = false
+    },
     sendSwaggers() {
       this.swaggerFiles = this.files
       this.selectedFiles = null
@@ -100,7 +148,7 @@ export default {
       this.swaggerFiles.forEach(iter => {
         ContractsRepository.createOne(iter.content).then(
           response => {
-            this.$snotify.success('Saved: ' + response.data)
+            this.$snotify.success('Saved swagger ' + iter.name + ': ' + response.data)
           },
           error => {
             console.log(error)
@@ -110,7 +158,7 @@ export default {
     },
     callbackLoadedFile(name, content, error) {
       if (error != null) {
-        this.filesHasError = true
+        this.filesErrors++
       }
 
       this.files.push({
@@ -119,42 +167,17 @@ export default {
         error: error
       })
     },
-    onOldFileUpload(fileList) {
-      let vm = this
-      this.files = []
-      this.filesHasError = false
-
-      for (let i = 0; i < fileList.length; i++) {
-        var reader = new FileReader()
-        reader.onload = function(event) {
-          let content = {}
-          let error = null
-          try {
-            content = yaml.safeLoad(event.target.result)
-          } catch (err) {
-            content = null
-            error = err
-          } finally {
-            vm.callbackLoadedFile(event.target.filename, content, error)
-          }
-        }
-        reader.filename = fileList.item(i).name
-        reader.readAsText(fileList.item(i))
-      }
-    },
     onFileUpload(fileList) {
       this.files = []
-      this.filesHasError = false
+      this.filesErrors = 0
 
       function readFile(index) {
         var reader = new FileReader()
-
         if (index >= fileList.length) {
           return
         }
 
-        var file = fileList.item(index)
-
+        var file = fileList[index]
         reader.onload = function(event) {
           let content = {}
           let error = null
@@ -169,10 +192,21 @@ export default {
           readFile(index + 1, vm)
         }
         reader.filename = file.name
-        reader.readAsBinaryString(file)
+        reader.readAsText(file)
       }
       let vm = this
       readFile(0, vm)
+    },
+    removeOne(file) {
+      for (let i = 0; i < this.files.length; i++) {
+        if (this.files[i].name === file.name) {
+          if (this.files[i].error != null) {
+            this.filesErrors--
+          }
+          this.files.splice(i, 1)
+          break
+        }
+      }
     }
   }
 }

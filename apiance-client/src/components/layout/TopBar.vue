@@ -6,19 +6,21 @@
       <div class="flex-grow-1"></div>
 
       <v-btn icon v-if="this.$route.name !== 'admin'" :to="{ name: 'admin' }">
-        <v-icon>mdi-magnify</v-icon>
+        <v-icon>fa-user-shield</v-icon>
       </v-btn>
 
       <v-btn icon v-if="this.$route.name === 'admin'" :to="{ name: 'home' }">
-        <v-icon>mdi-home</v-icon>
+        <v-icon>fa-home</v-icon>
       </v-btn>
 
-      <v-btn v-on:click="sendLogout">{{ $t('toolbar.logout')}}</v-btn>
+      <v-btn icon v-on:click="sendLogout">
+        <v-icon>fa-sign-out-alt</v-icon>
+      </v-btn>
 
       <v-menu bottom left>
         <template v-slot:activator="{ on }">
           <v-btn dark icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
+            <v-icon>fa-globe-europe</v-icon>
           </v-btn>
         </template>
         <v-list>
