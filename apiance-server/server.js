@@ -2,8 +2,6 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const passport = require('passport');
-const LdapStrategy = require('passport-ldapauth');
 
 // Build App
 const app = express();
@@ -27,10 +25,6 @@ const OPTS = {
     searchFilter: '(&(objectclass=person)(cn=test))',
   }
 };
-passport.use(new LdapStrategy(OPTS));
-app.use(passport.initialize());
-
-
 
 // API routes
 var userRouter = require('./routes/user');

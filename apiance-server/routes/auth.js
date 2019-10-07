@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { catchErrors } = require("../handlers/errorHandlers");
 const authController = require("../controllers/auth");
-const passport = require('passport');
 
 // Login user
 router.post("/login", catchErrors(authController.login));
