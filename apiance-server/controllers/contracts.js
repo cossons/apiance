@@ -58,8 +58,12 @@ exports.create = async (request, response) => {
     response.status(500).send({ error: "Json Body should not be null" });
   }
 
+  console.log(json_getAllKeys([swaggerDoc]))
+
+
   try {
     let swaggerJson = await SwaggerParser.validate(swaggerDoc);
+    swaggerJson
 
     let contract = {
       dtInsert: moment().unix(),
