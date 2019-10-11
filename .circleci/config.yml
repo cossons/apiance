@@ -1,18 +1,36 @@
-  version: 2.1
-  jobs:
-    build:
-      docker:
-        - image: circleci/node:4.8.2 # the primary container, where your job's commands are run
-      steps:
-        - checkout # check out the code in the project directory
-        - run: echo "hello world" # run the `echo` command
-        - setup_remote_docker:
-            docker_layer_caching: true
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:7.10
 
+    working_directory: ~/repo
+
+    steps:
+       - setup_remote_docker:
+            docker_layer_caching: true
+       
+       - checkout
+      
+       - run: npm install
+      
         # build and push Docker image
-        - run: |
-            TAG=0.1.$CIRCLE_BUILD_NUM
-            docker build -t   skytroyen/testing_env:$TAG .
-            echo "$DOCKER_USER"
-            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-            docker push skytroyen/testing_env:$TAG
+       - run: |
+           TAG=0.1.$CIRCLE_BUILD_NUM
+           docker build -t   skytroyen/testing_env:$TAG .
+           echo "$DOCKER_USER"
+           docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+           docker push skytroyen/testing_env:$TAG
+           
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
