@@ -9,5 +9,5 @@ RUN npm install
 # RUN npm ci --only=production
 
 
-EXPOSE 3000
+EXPOSE 8080
 CMD [ "npm", "run", "serve" ]
