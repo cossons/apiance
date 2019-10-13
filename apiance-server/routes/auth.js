@@ -9,7 +9,7 @@ const authController = require("../controllers/auth");
 router.post("/login", authentication.basicLDAP(), catchErrors(authController.login));
 
 // Invalidate token / logout user
-router.get("/invalidate", authentication.basicJWT(), catchErrors(authController.invalidate));
+router.post("/invalidate", authentication.basicJWT(), catchErrors(authController.invalidate));
 
 // Verify user token
 router.get("/token/verify", catchErrors(authController.tokenVerify));

@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const authenticationActivation = process.env.WEBAPP_AUTHENTICATION_ACTIVATION || true;
 const passport = require("passport");
 const passportJWT = require("passport-jwt");
 const passportLDAP = require('passport-ldapauth');
@@ -35,31 +36,42 @@ module.exports.basicJWT = function basicJWT() {
 }
 
 module.exports.basicLDAP = function basicLDAP() {
-    return (req, res, next) => {
-        const authorization = req.get('Authorization');
+    if (authenticationActivation == 'false') {
+        return (req, res, next) => {
+            req.user = {
+                dn: 'dummy'
+            }
 
-        if (!authorization) {
-            // Send the request for Basic Authentication and exit
-            res.set('WWW-Authenticate', 'Basic').status(401).json({
-                message: 'Missing header',
-            });
             return next();
         }
+    } else {
+        return (req, res, next) => {
+            const authorization = req.get('Authorization');
 
-        // Do the authentication
-        return passport.authenticate('ldapauth', (err, userLdap, info) => {
-            if (err) {
-                return next(err);
-            }
-
-            if (!userLdap) {
-                // Authentication failed
-                return res.set('WWW-Authenticate', 'Basic').status(401).json(info || {});
-            } else {
-                req.user = userLdap;
-
+            if (!authorization) {
+                // Send the request for Basic Authentication and exit
+                res.set('WWW-Authenticate', 'Basic').status(401).json({
+                    message: 'Missing header',
+                });
                 return next();
             }
-        })(req, res, next);
-    };
+
+
+            // Do the authentication
+            return passport.authenticate('ldapauth', (err, userLdap, info) => {
+                if (err) {
+                    return next(err);
+                }
+
+                if (!userLdap) {
+                    // Authentication failed
+                    return res.set('WWW-Authenticate', 'Basic').status(401).json(info || {});
+                } else {
+                    req.user = userLdap;
+
+                    return next();
+                }
+            })(req, res, next);
+        };
+    }
 };

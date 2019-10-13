@@ -90,7 +90,8 @@ export default {
     },
     loginError(val) {
       if (val != null) {
-        this.$notify('error', 'Login Error', val, { duration: 3000, permanent: false })
+        console.log(val)
+        this.$snotify.error(val, 'Login Error')
       }
     }
   }

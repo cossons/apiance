@@ -1,15 +1,19 @@
 import { currentUser } from '@/config'
+import { RepositoryFactory } from '../../repositories/repository-factory'
+const AuthRepository = RepositoryFactory.get('auth')
 
 export default {
   state: {
     currentUser: localStorage.getItem('user') != null ? JSON.parse(localStorage.getItem('user')) : null,
     loginError: null,
-    processing: false
+    processing: false,
+    bearerToken: localStorage.getItem('bearerToken') != null ? JSON.parse(localStorage.getItem('bearerToken')) : null
   },
   getters: {
     currentUser: state => state.currentUser,
     processing: state => state.processing,
-    loginError: state => state.loginError
+    loginError: state => state.loginError,
+    bearerToken: state => state.bearerToken
   },
   mutations: {
     setUser(state, payload) {
@@ -40,24 +44,23 @@ export default {
       commit('clearError')
       commit('setProcessing', true)
 
-      var user = { uid: 'uuid-test', ...currentUser }
-      localStorage.setItem('user', JSON.stringify(user))
-      commit('setUser', user)
+      var config = {
+        auth: {
+          username: payload.email,
+          password: payload.password
+        }
+      }
 
-      // firebase
-      //   .auth()
-      //   .signInWithEmailAndPassword(payload.email, payload.password)
-      //   .then(
-      //     user => {
-      //       const item = { uid: user.user.uid, ...currentUser }
-      //       localStorage.setItem('user', JSON.stringify(item))
-      //       commit('setUser', { uid: user.user.uid, ...currentUser })
-      //     },
-      //     err => {
-      //       localStorage.removeItem('user')
-      //       commit('setError', err.message)
-      //     }
-      //   )
+      AuthRepository.login(config).then((response) => {
+        console.log(response)
+        var user = { uid: 'uuid-test', ...currentUser }
+        localStorage.setItem('user', JSON.stringify({ uid: 'uuid-test', ...currentUser }))
+        localStorage.setItem('bearerToken', response.data.token)
+        commit('setUser', user)
+      }, (error) => {
+        console.log(error)
+        commit('setError', error)
+      })
     },
     logout({ commit }) {
       return function () {
