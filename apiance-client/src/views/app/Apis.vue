@@ -28,7 +28,6 @@ export default {
     async fetch(id) {
       const { data } = await ContractsRepository.getOne(id)
       this.contract = data
-      console.log()
     },
     loadSwagger(id) {
       SwaggerUI({

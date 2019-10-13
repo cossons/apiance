@@ -131,7 +131,7 @@ export default {
       ContractsRepository.clearAll()
         .then(function(response) {})
         .catch(function(error) {
-          console.log(error)
+          this.$snotify.error('Error occured: ' + JSON.stringify(error))
         })
         .finally(() => {
           this.deleteModal = false
@@ -151,7 +151,7 @@ export default {
             this.$snotify.success('Saved swagger ' + iter.name + ': ' + response.data)
           },
           error => {
-            console.log(error)
+            this.$snotify.error('Error occured: ' + JSON.stringify(error))
           }
         )
       })
