@@ -46,3 +46,8 @@ https://vuematerial.io/getting-started/
 
 https://github.com/vuetifyjs/vuetify
 https://fontawesome.com/icons?d=gallery&q=user
+
+## Docker build steps
+
+docker build . -t apiance-client
+docker run -d -p 8080:80 apiance-client

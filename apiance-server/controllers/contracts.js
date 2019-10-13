@@ -1,6 +1,8 @@
 const db = require('../models/contracts')
 const SwaggerParser = require("swagger-parser");
 const moment = require('moment');
+const dot = require('dot-object');
+
 
 //const model = require('../models/contracts');
 
@@ -58,8 +60,13 @@ exports.create = async (request, response) => {
     response.status(500).send({ error: "Json Body should not be null" });
   }
 
-  console.log(json_getAllKeys([swaggerDoc]))
-
+  /*
+    Json corect field.foo = "bar" ->
+    field :{
+      foo: "bar"
+    }
+  */
+  dot.object(swaggerDoc);
 
   try {
     let swaggerJson = await SwaggerParser.validate(swaggerDoc);
