@@ -1,0 +1,15 @@
+ldapsearch \
+  -H ldap://192.168.0.19:389 \
+  -x \
+  -D cn=admin,dc=apiance,dc=com \
+  -w apiance \
+  -b dc=apiance,dc=com \
+  "(cn=test)"
+
+  ldapsearch \
+  -H ldap://192.168.0.19:389 \
+  -x \
+  -D cn=admin,dc=apiance,dc=com \
+  -w apiance \
+  -b dc=apiance,dc=com \
+  "(cn=admin)"

@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const { catchErrors } = require("../handlers/errorHandlers");
+const authentication = require('../modules/authentication');
+
 const authController = require("../controllers/auth");
 
 // Login user
-router.post("/login", catchErrors(authController.login));
+router.post("/login", authentication.basicLDAP(), catchErrors(authController.login));
 
 // Invalidate token / logout user
-router.get("/invalidate", catchErrors(authController.invalidate));
+router.get("/invalidate", authentication.basicJWT(), catchErrors(authController.invalidate));
 
 // Verify user token
 router.get("/token/verify", catchErrors(authController.tokenVerify));

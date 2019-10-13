@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const authentication = require('./modules/authentication');
 
 // Build App
 const app = express();
@@ -14,6 +15,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+// Passport auth usage
+app.use(authentication.initialize());
 
 // Get LDAP config
 const OPTS = {
@@ -34,8 +38,8 @@ var authRouter = require('./routes/auth');
 // var todosRouter = require('./routes/todos');
 
 app.use('/api/auth', authRouter);
-app.use('/user'/*, jwtAuthz(['admin', 'customer']),*/, userRouter);
 app.use('/api/contracts'/*, jwtAuthz(['admin']),*/, contractsRouter);
+app.use('/api/user', userRouter);
 
 // app.use('/todos'/*, jwtAuthz(['admin', 'customer']),*/, todosRouter);
 
