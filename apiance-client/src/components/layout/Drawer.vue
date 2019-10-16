@@ -91,7 +91,7 @@ export default {
 
       let map = new Map()
       data.forEach(function(iter) {
-        let contract = iter.swagger
+        let contract = JSON.parse(iter.swagger)
 
         if (contract.host === undefined) {
           contract.host = 'N/A'
