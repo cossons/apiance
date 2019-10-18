@@ -1,0 +1,4 @@
+{"username":"dummy","lastLogin":1570988437,"dtUpdate":1570988437,"_id":"fvjH9vQgBmOvtY9W"}
+{"username":"cn=test,dc=apiance,dc=com","lastLogin":1570989335,"dtUpdate":1570989335,"_id":"nyLesNHqN1Imgei6"}
+{"username":"cn=admin,dc=apiance,dc=com","lastLogin":1570988449,"dtUpdate":1570988449,"_id":"oDfNPJnexDbyXyoN"}
+{"$$indexCreated":{"fieldName":"username","unique":true,"sparse":false}}

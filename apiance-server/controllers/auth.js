@@ -1,5 +1,39 @@
+const _ = require('lodash');
+const jwt = require('jsonwebtoken');
+const users = require('../models/users')
+const authentication = require('../modules/authentication');
+const usersController = require('../controllers/users');
+const moment = require('moment');
+const uuidv4 = require('uuid/v4');
+
 exports.login = async (request, response) => {
-    response.send([]);
+    // The user is validated by the ldap authentication policy
+    // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
+    var userLdap = request.user;
+
+    var user = await usersController.dao.findByUsername(userLdap.dn);
+
+    var docUser = {};
+    if (user) {
+        docUser = { username: userLdap.dn, lastLogin: moment().unix() };
+    } else {
+        docUser = {
+            username: userLdap.dn,
+            lastLogin: moment().unix(),
+            role: 'user',
+            dtInsert: moment().unix()
+        };
+    }
+
+    let _id = await usersController.dao.upsert(docUser);
+    if (_id) {
+        var token = jwt.sign({ id: _id },
+            authentication.jwtOptions.secretOrKey,
+            { expiresIn: '30m' });
+        response.json({ message: "ok", token: token });
+    } else {
+        response.status(500).send({ message: 'An error occured' });
+    }
 };
 
 exports.invalidate = async (request, response) => {
@@ -11,31 +45,3 @@ exports.invalidate = async (request, response) => {
         message: 'Token terminated'
     });
 };
-
-exports.tokenVerify = async (request, response) => {
-    response.send([]);
-};
-
-exports.tokenRefresh = async (request, response) => {
-    response.send([]);
-};
-
-/*
-    Utils
-*/
-function getToken(req) {
-    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-        return req.headers.authorization.split(' ')[1];
-    } else if (req.query && req.query.token) {
-        return req.query.token;
-    } else if (req.body && req.body.token) {
-        return req.body.token;
-    } else if (req.params && req.params.token) {
-        return req.params.token;
-    } else if (req.headers && req.headers['x-access-token']) {
-        return req.headers['x-access-token'];
-    } else if (req.cookies && req.cookies.token) {
-        return req.cookies.token;
-    }
-    return null;
-}

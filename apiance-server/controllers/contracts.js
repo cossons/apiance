@@ -1,6 +1,8 @@
 const db = require('../models/contracts')
 const SwaggerParser = require("swagger-parser");
 const moment = require('moment');
+const dot = require('dot-object');
+
 
 //const model = require('../models/contracts');
 
@@ -17,7 +19,7 @@ exports.findAll = async (request, response) => {
 
 exports.findAllNames = async (request, response) => {
   // const articles = await model.find().sort("_id");
-  db.find({}, { 'swagger.host': 1, 'swagger.info.title': 1, 'swagger.info.version': 1 }, function (err, docs) {
+  db.find({}, {}, function (err, docs) {
     response.send(docs);
   });
 
@@ -63,13 +65,14 @@ exports.create = async (request, response) => {
 
     let contract = {
       dtInsert: moment().unix(),
-      swagger: swaggerJson
+      swagger: JSON.stringify(swaggerJson)
     };
+
     db.insert(contract, function (err, newDoc) {
       // newDoc is the newly inserted document, including its _id
       // newDoc has no key called notToBeSaved since its value was undefined
       if (err) {
-        console.err(err)
+        console.error(err)
         response.status(500).send({ error: err.toString() });
       } else {
         response.send(newDoc._id);

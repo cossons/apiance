@@ -1,42 +1,36 @@
 <template>
-  <md-toolbar class="md-primary" md-elevation="0">
-    <div class="md-toolbar-section-start">
-      <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
-        <md-icon>menu</md-icon>
-      </md-button>
-    </div>
+  <v-app-bar app clipped-left>
+    <v-toolbar class="primary" dark>
+      <v-toolbar-title>APIANCE - An API Doc Platform</v-toolbar-title>
 
-    <h3 class="md-title" style="flex: 1">APIANCE - An API Doc Platform</h3>
+      <div class="flex-grow-1"></div>
 
-    <div class="md-toolbar-section-end">
-      <router-link v-if="this.$route.name !== 'admin'" :to="{ name: 'admin' }">
-        <md-button class="md-icon-button">
-          <md-icon>supervisor_account</md-icon>
-        </md-button>
-      </router-link>
+      <v-btn icon v-if="this.$route.name !== 'admin'" :to="{ name: 'admin' }">
+        <v-icon>fa-user-shield</v-icon>
+      </v-btn>
 
-      <router-link v-if="this.$route.name === 'admin'" :to="{ name: 'home' }">
-        <md-button class="md-icon-button">
-          <md-icon>home</md-icon>
-        </md-button>
-      </router-link>
+      <v-btn icon v-if="this.$route.name === 'admin'" :to="{ name: 'home' }">
+        <v-icon>fa-home</v-icon>
+      </v-btn>
 
-      <md-button v-on:click="sendLogout">{{ $t('toolbar.logout')}}</md-button>
+      <v-btn icon v-on:click="sendLogout">
+        <v-icon>fa-sign-out-alt</v-icon>
+      </v-btn>
 
-      <md-menu>
-        <md-button md-menu-trigger class="md-icon-button">
-          <md-icon>more_vert</md-icon>
-          <md-menu-content>
-            <md-menu-item
-              v-for="(l,index) in localeOptions"
-              :key="index"
-              @click="changeLocale(l.id)"
-            >{{l.name}}</md-menu-item>
-          </md-menu-content>
-        </md-button>
-      </md-menu>
-    </div>
-  </md-toolbar>
+      <v-menu bottom left>
+        <template v-slot:activator="{ on }">
+          <v-btn dark icon v-on="on">
+            <v-icon>fa-globe-europe</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-for="(lang,it) in localeOptions" :key="it" @click="changeLocale(l.id)">
+            <v-list-item-title>{{ lang.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-toolbar>
+  </v-app-bar>
 </template>
 
 <script>

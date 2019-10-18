@@ -1,68 +1,74 @@
 <template>
-  <md-app-drawer :md-active.sync="menuVisible" md-persistent="mini">
-    <md-toolbar class="md-primary" md-elevation="0">
-      <span>Navigation</span>
+  <v-navigation-drawer app clipped permanent>
+    <v-list shaped dense>
+      <v-list-item :to="{ name: 'home' }" link>
+        <v-list-item-icon>
+          <v-icon>fa-home</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>{{$t('drawer.home')}}</v-list-item-title>
+      </v-list-item>
 
-      <div class="md-toolbar-section-end">
-        <md-button class="md-icon-button md-dense" @click="toggleMenu">
-          <md-icon>keyboard_arrow_left</md-icon>
-        </md-button>
-      </div>
-    </md-toolbar>
+      <v-list-item :to="{ name: 'performances' }">
+        <v-list-item-icon>
+          <v-icon>fa-tachometer-alt</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>{{$t('drawer.performances')}}</v-list-item-title>
+      </v-list-item>
 
-    <md-list class="md-dense">
-      <router-link to="/app/home">
-        <md-list-item>
-          <md-icon>home</md-icon>
-          <span class="md-list-item-text">{{$t('drawer.home')}}</span>
-        </md-list-item>
-      </router-link>
+      <v-list-item :to="{ name: 'codes' }">
+        <v-list-item-icon>
+          <v-icon>fa-list-alt</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>{{$t('drawer.codes')}}</v-list-item-title>
+      </v-list-item>
 
-      <md-list-item md-expand>
-        <md-icon>view_list</md-icon>
-        <span class="md-list-item-text">List APIs</span>
-        <md-list slot="md-expand" class="consumer-container">
-          <md-list-item v-for="(consumer, it)  in this.contracts.entries()" :key="it">
-            <md-list-item md-expand class="no-border">
-              <span class="md-list-item-text">{{consumer[0]}}</span>
-              <md-list slot="md-expand" class="api-container">
-                <md-list-item v-for="(api, it)  in consumer[1]" :key="it" class="md-inset">
-                  <md-list-item md-expand class="no-border">
-                    <span class="md-list-item-text">{{api[0]}}</span>
-                    <md-list slot="md-expand" class="version-container">
-                      <md-list-item v-for="(version, it) in api[1]" :key="it">
-                        <router-link :to="{ name: 'apis', params: {id: version[1]} }">
-                          <span class="md-list-item-text">{{version[0]}}</span>
-                        </router-link>
-                      </md-list-item>
-                    </md-list>
-                  </md-list-item>
-                </md-list-item>
-              </md-list>
-            </md-list-item>
-          </md-list-item>
-        </md-list>
-      </md-list-item>
+      <v-list-group prepend-icon="fa-file-contract" value="true">
+        <template v-slot:activator>
+          <v-list-item-title>{{$t('drawer.apis')}}</v-list-item-title>
+        </template>
 
-      <router-link to="/app/performances">
-        <md-list-item>
-          <md-icon>speed</md-icon>
-          <span class="md-list-item-text">{{$t('drawer.performances')}}</span>
-        </md-list-item>
-      </router-link>
+        <v-list-group
+          no-action
+          sub-group
+          value="true"
+          v-for="(consumer, it)  in this.contracts.entries()"
+          :key="it"
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>{{consumer[0]}}</v-list-item-title>
+            </v-list-item-content>
+          </template>
 
-      <router-link to="/app/codeList">
-        <md-list-item>
-          <md-icon>code</md-icon>
-          <span class="md-list-item-text">{{$t('drawer.codes')}}</span>
-        </md-list-item>
-      </router-link>
-    </md-list>
-  </md-app-drawer>
+          <v-list-group
+            no-action
+            sub-group
+            value="true"
+            v-for="(api, it)  in consumer[1]"
+            :key="it"
+          >
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>{{api[0]}}</v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item
+              v-for="(version, it) in api[1]"
+              :key="it"
+              :to="{ name: 'apis', params: {id: version[1]} }"
+            >
+              <v-list-item-title v-text="version[0]"></v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+        </v-list-group>
+      </v-list-group>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import { RepositoryFactory } from '../../repositories/repository-factory'
 const ContractsRepository = RepositoryFactory.get('contracts')
 
@@ -74,11 +80,7 @@ export default {
       contracts: []
     }
   },
-  computed: {
-    ...mapGetters({
-      menuVisible: 'getMenuVisible'
-    })
-  },
+  computed: {},
   created() {
     this.fetch()
   },
@@ -89,7 +91,7 @@ export default {
 
       let map = new Map()
       data.forEach(function(iter) {
-        let contract = iter.swagger
+        let contract = JSON.parse(iter.swagger)
 
         if (contract.host === undefined) {
           contract.host = 'N/A'
@@ -127,34 +129,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.md-list {
-  padding: 0px !important;
-}
-.md-list-item-content {
-  padding: 0px !important;
-  padding-left: 15px !important;
-}
-
-.md-list-item {
-  width: 100%;
-}
-
-.api-container > * > * > * > * > * > * > span {
-  color: red;
-}
-
-.version-container {
-  display: flex !important;
-  flex-flow: row !important;
-}
-
-.version-container > * > * > * > * > span {
-  margin-left: 5px;
-}
-
-.no-border > div {
-  border: 0px;
-}
-</style>

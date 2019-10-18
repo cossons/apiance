@@ -13,16 +13,14 @@ import { defaultLocale, localeOptions } from '@/config.js'
 // Moment
 import VueMoment from 'vue-moment'
 
-// Material config
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/default.css'
-
 // Notification asset :  Snotify
 import Snotify, { SnotifyPosition } from 'vue-snotify'
 
 // Css import theme
 import './assets/css/sass/theme.default.scss'
+import '@mdi/font/css/materialdesignicons.css'
+
+import vuetify from './plugins/vuetify'
 
 const optionsSnotify = {
   toast: {
@@ -35,7 +33,6 @@ Vue.config.productionTip = false
 Vue.use(VueI18n)
 Vue.use(VueMoment)
 Vue.use(Snotify, optionsSnotify)
-Vue.use(VueMaterial)
 
 const messages = { en: en, fr: fr }
 const locale = (localStorage.getItem('currentLanguage') && localeOptions.filter(x => x.id === localStorage.getItem('currentLanguage')).length > 0) ? localStorage.getItem('currentLanguage') : defaultLocale
@@ -50,5 +47,6 @@ export default new Vue({
   router,
   i18n,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')

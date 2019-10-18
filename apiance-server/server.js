@@ -2,8 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const passport = require('passport');
-const LdapStrategy = require('passport-ldapauth');
+const authentication = require('./modules/authentication');
 
 // Build App
 const app = express();
@@ -17,6 +16,9 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+// Passport auth usage
+app.use(authentication.initialize());
+
 // Get LDAP config
 const OPTS = {
   server: {
@@ -27,10 +29,6 @@ const OPTS = {
     searchFilter: '(&(objectclass=person)(cn=test))',
   }
 };
-passport.use(new LdapStrategy(OPTS));
-app.use(passport.initialize());
-
-
 
 // API routes
 var userRouter = require('./routes/user');
@@ -40,8 +38,8 @@ var authRouter = require('./routes/auth');
 // var todosRouter = require('./routes/todos');
 
 app.use('/api/auth', authRouter);
-app.use('/user'/*, jwtAuthz(['admin', 'customer']),*/, userRouter);
 app.use('/api/contracts'/*, jwtAuthz(['admin']),*/, contractsRouter);
+app.use('/api/user', userRouter);
 
 // app.use('/todos'/*, jwtAuthz(['admin', 'customer']),*/, todosRouter);
 
