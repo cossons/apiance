@@ -28,7 +28,6 @@ export default {
     async fetch(id) {
       const { data } = await ContractsRepository.getOne(id)
       this.contract = data
-      console.log()
     },
     loadSwagger(id) {
       SwaggerUI({
@@ -51,4 +50,8 @@ export default {
 
 <style lang="scss">
 @import '~swagger-ui/dist/swagger-ui.css';
+.v-application .swagger-ui .info{
+    background-color: transparent!important;
+    border-color: transparent!important;
+}
 </style>

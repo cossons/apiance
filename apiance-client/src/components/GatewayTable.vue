@@ -1,5 +1,5 @@
 <template>
-  <md-content>
+  <!-- <md-content>
     <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
@@ -26,7 +26,10 @@
         <md-table-cell md-label="Job Title" md-sort-by="title">{{ item.title }}</md-table-cell>
       </md-table-row>
     </md-table>
-  </md-content>
+  </md-content> -->
+  <div>
+    toto
+  </div>
 </template>
 
 <script>
