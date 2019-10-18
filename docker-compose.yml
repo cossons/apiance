@@ -1,0 +1,12 @@
+version: '3'
+services:
+  apiance-client:
+    build: ./apiance-client
+    ports:
+      - "8080:8080"
+    depends_on:
+      - apiance-server
+    links:
+      - apiance-server
+  apiance-server:
+    build: ./apiance-server
