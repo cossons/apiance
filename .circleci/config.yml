@@ -16,7 +16,7 @@ jobs:
         # build and push Docker image
        - run: |
            TAG=0.1.$CIRCLE_BUILD_NUM
-           docker-compose build --parallel
+           docker-compose build
            docker tag apiance_apiance-client:latest skytroyen/apiance-client:$TAG
            docker tag apiance_apiance-server:latest skytroyen/apiance-server:$TAG
            echo "$DOCKER_USER"
