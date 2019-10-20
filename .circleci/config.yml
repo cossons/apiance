@@ -18,11 +18,11 @@ jobs:
            TAG=0.1.$CIRCLE_BUILD_NUM
 
            docker-compose build --parallel
-           docker tag apiance_apiance-client:latest $DOCKER_REPO/apiance-client:$TAG
-           docker tag apiance_apiance-server:latest $DOCKER_REPO/apiance-server:$TAG
+           docker tag apiance_apiance-client:latest $DOCKER_USER/apiance-client:$TAG
+           docker tag apiance_apiance-server:latest $DOCKER_USER/apiance-server:$TAG
 
            echo "$DOCKER_USER"
 
            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-           docker push $DOCKER_REPO/apiance-client:$TAG
-           docker push $DOCKER_REPO/apiance-server:$TAG
+           docker push $DOCKER_USER/apiance-client:$TAG
+           docker push $DOCKER_USER/apiance-server:$TAG
